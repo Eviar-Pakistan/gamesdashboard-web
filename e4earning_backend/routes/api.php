@@ -28,6 +28,7 @@ Route::post('/forget-password', [userController::class, 'forgetPassword']);
 
 Route::post('login', [userController::class, 'login']);
 Route::get('check-user-balance', [userController::class, 'checkBalance']);
+Route::post('add-coins', [userController::class, 'addCoins']);
 
 Route::get('get-users', [userController::class, 'getAllUsers']);
 

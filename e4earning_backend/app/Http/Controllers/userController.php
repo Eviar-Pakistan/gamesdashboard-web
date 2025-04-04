@@ -82,7 +82,25 @@ class userController extends Controller
             'code' => $user->code,
         ], 200);
     }
+    public function addCoins(Request $request)
+    {
+        $userId = $request->userId;
 
+        $user = User::whereId($userId)->first();
+        if ($user == null) {
+            return response()->json([
+                'message' => "User not found",
+            ]);
+        }
+        $request->validate([
+            'coins' => 'required',
+        ]);
+        $user->coin_balance = $user->coin_balance + $request->coins;
+        $user->save();
+        return response()->json([
+            'message' => "Successfully added coins",
+        ]);
+    }
     public function logout()
     {
         auth()->user()->tokens()->delete();

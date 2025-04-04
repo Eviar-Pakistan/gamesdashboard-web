@@ -30,6 +30,7 @@ class WithdrawController extends Controller
                 'user_id' => 'required|integer',
             ]);
             $withdraw = Withdraw::create($validatedData);
+            $withdraw->save();
             $withdraw->load('user');
             return $withdraw;
         }
