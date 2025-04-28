@@ -82,23 +82,76 @@ class userController extends Controller
             'code' => $user->code,
         ], 200);
     }
-    public function addCoins(Request $request)
+public function addCoins(Request $request)
     {
         $userId = $request->userId;
-
+    
+        // Fetch the user from the database
         $user = User::whereId($userId)->first();
         if ($user == null) {
             return response()->json([
                 'message' => "User not found",
             ]);
         }
+    
+        // Validate the 'coins' parameter
         $request->validate([
-            'coins' => 'required',
+            'coins' => 'required|numeric',
         ]);
-        $user->coin_balance = $user->coin_balance + $request->coins;
+    
+        // Calculate 95% of the coins to be added to the user's balance
+        $coinsToAdd = ceil($request->coins * 0.95); // 95% to the user
+        $coinsForAdmin = ceil($request->coins * 0.05); // 5% to admin (id = 3)
+    
+        // Update the user's coin balance (95%)
+        $user->coin_balance += $coinsToAdd;
         $user->save();
+    
+        // Check if the user is not the admin (id = 3)
+        if ($userId != 3) {
+            // Add 5% to the admin's coin balance (id = 3)
+            $admin = User::find(1); // Get the admin user
+            if ($admin) {
+                $admin->coin_balance += $coinsForAdmin;
+                $admin->save();
+            }
+        }
+    
         return response()->json([
             'message' => "Successfully added coins",
+            'coin_balance' => $user->coin_balance, // Return updated balance for the user
+        ]);
+    }
+      public function deductCoins(Request $request)
+    {
+        $userId = $request->userId;
+    
+        // Fetch the user from the database
+        $user = User::whereId($userId)->first();
+        if ($user == null) {
+            return response()->json([
+                'message' => "User not found",
+            ]);
+        }
+    
+        // Validate the 'coins' parameter
+        $request->validate([
+            'coins' => 'required|numeric',
+        ]);
+    
+        // // Calculate 95% of the coins to be added to the user's balance
+        // $coinsToAdd = ceil($request->coins * 0.95); // 95% to the user
+        // $coinsForAdmin = ceil($request->coins * 0.05); // 5% to admin (id = 3)
+    
+        // Update the user's coin balance (95%)
+        // $user->coin_balance += $coinsToAdd;
+        $user->coin_balance -= $request->coins;
+        $user->save();
+    
+    
+        return response()->json([
+            'message' => "Successfully added coins",
+            'coin_balance' => $user->coin_balance, // Return updated balance for the user
         ]);
     }
     public function logout()
@@ -139,7 +192,7 @@ class userController extends Controller
     {
         if ($request->count != "yes") {
             // $userId = $request->userId;
-            $user = User::whereNotIn('id', [8])->get();
+            $user = User::whereNotIn('id', [1])->get();
 
             // if ($user == null) {
             //     return response()->json([
@@ -151,7 +204,7 @@ class userController extends Controller
                 'users' => $user,
             ]);
         } else {
-            $user = User::whereNotIn('id', [8])->count();
+            $user = User::whereNotIn('id', [1])->count();
 
             return response()->json([
                 'users' => $user,
@@ -166,7 +219,7 @@ class userController extends Controller
             'coins' => 'required'
         ]);
 
-        if ($request->admin_id != 8) {
+        if ($request->admin_id != 1) {
             return response()->json([
                 'message' => 'not admin'
             ]);

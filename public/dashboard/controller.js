@@ -326,7 +326,7 @@ app.controller(
           method: "POST",
           url: $scope.dbURL + "add-admin-coins",
           data: {
-            admin_id: 8,
+            admin_id: 1,
             coins: $scope.coinsGenerate,
           },
           headers: {
@@ -384,7 +384,7 @@ app.controller(
           url: $scope.dbURL + "settings/JazzCash",
           data: {
             value: $scope.titleJazz + "|" + $scope.numberJazz,
-            user_id: 8,
+            user_id: 1,
           },
           headers: {
             "Content-Type": "application/json",
@@ -407,7 +407,7 @@ app.controller(
           url: $scope.dbURL + "settings/EasyPaisa",
           data: {
             value: $scope.titleEasy + "|" + $scope.numberEasy,
-            user_id: 8,
+            user_id: 1,
           },
           headers: {
             "Content-Type": "application/json",
