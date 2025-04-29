@@ -9,6 +9,7 @@ use App\Http\Controllers\RacesController;
 use App\Http\Controllers\GiftCoinController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\WithdrawController;
+use App\Http\Controllers\DepositInfoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +63,8 @@ Route::post('/withdraws', [WithdrawController::class, 'store']);
 Route::get('/withdraws/{withdraw}', [WithdrawController::class, 'show']);
 Route::post('/withdraws/{withdraw}', [WithdrawController::class, 'update']);
 Route::post('/withdraws/{withdraw}', [WithdrawController::class, 'destroy']);
+
+Route::get('/deposit-info', [DepositInfoController::class, 'index']);
 
 Route::get('/deposits', [DepositController::class, 'index']);
 Route::post('/deposits', [DepositController::class, 'store']);

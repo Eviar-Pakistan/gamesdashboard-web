@@ -7,7 +7,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\DB;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -23,8 +23,24 @@ class DatabaseSeeder extends Seeder
             'type' => '0', // If there's a user type field
             'coin_balance' => 1000, // Optional, if applicable
             'code' => "0", // Generates a unique 6-character code
-        ]);
-        // \App\Models\User::factory(10)->create();
+	]);
+	DB::table('deposit_info')->insert([
+		[
+			'account_type' => 'Easypaisa',
+			'account_title' => 'Eviar Pakistan',
+			'account_no' => '03001234567',
+			'created_at' => now(),
+			'updated_at' => now(),
+		],
+		[
+			'account_type' => 'Jazzcash',
+			'account_title' => 'Eviar Pakistan',
+			'account_no' => '03001234567',
+			'created_at' => now(),
+			'updated_at' => now(),
+		],
+	]);
+	// \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

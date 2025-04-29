@@ -222,15 +222,17 @@ app.controller(
     $scope.checkBalance = function () {
       $http({
         method: "GET",
-        url: $scope.dbURL + "check-user-balance?userId=" + $cookies.get("id"),
+	      //url: $scope.dbURL + "check-user-balance?userId=" + $cookies.get("id"),
+	      url: $scope.dbURL + "check-user-balance?userId=1",
         data: {},
         headers: {
           "Content-Type": "application/json",
         },
       })
         .then(function (response) {
-          console.log(response.data);
+          console.log("coins: ",response.data);
           $scope.balance = response.data["coin_balance"];
+		
 
           //   else {
           //     console.log("invalid Password");
