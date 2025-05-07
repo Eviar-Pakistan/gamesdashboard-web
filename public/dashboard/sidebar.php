@@ -39,6 +39,9 @@ require('config.php');
                 <li class="slide">
                     <a class="side-menu__item has-link" data-bs-toggle="slide" href="settings.php"><i class="side-menu__icon fe fe-home"></i><span class="side-menu__label">Settings</span></a>
                 </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" data-bs-toggle="slide" href="allusers.php"><i class="side-menu__icon fe fe-home"></i><span class="side-menu__label">All users</span></a>
+                </li>
                 <!-- <li class="sub-category">
                 <h3>UI Kit</h3>
             </li> -->

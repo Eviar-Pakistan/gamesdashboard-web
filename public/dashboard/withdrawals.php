@@ -93,7 +93,7 @@
                                             <table class="table table-bordered text-nowrap border-bottom" id="basic-datatable">
                                                 <thead>
                                                     <tr>
-                                                        <th class="wd-15p border-bottom-0">User ID</th>    
+                                                        <th class="wd-15p border-bottom-0">User ID</th>
                                                         <th class="wd-15p border-bottom-0">Full name</th>
                                                         <th class="wd-15p border-bottom-0">Mobile number</th>
                                                         <th class="wd-20p border-bottom-0">Withdraw Account type</th>
@@ -102,47 +102,55 @@
                                                         <th class="wd-15p border-bottom-0">Withdraw Coins</th>
                                                         <th class="wd-15p border-bottom-0">Date</th>
                                                         <th class="wd-15p border-bottom-0">Action</th>
+                                                        <th class="wd-15p border-bottom-0">Delete</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr ng-repeat="w in withdrawals">
-                                                    <td>{{w.user_id}}</td>
-                                                    <td>{{w.user.name}}</td>
+                                                    <tr ng-repeat="w in withdrawals | filter:{withdrawstatus:'1'}">
+                                                        <td>{{w.user_id}}</td>
+                                                        <td>{{w.user.name}}</td>
                                                         <td>{{w.user.mobile_no}}</td>
                                                         <td>
                                                             {{w.account_type}}
-                                                            
+
                                                         </td>
                                                         <td>
                                                             {{w.account_title}}
-                                                            
+
                                                         </td>
                                                         <td>
                                                             {{w.account_no}}
-                                                            
+
                                                         </td>
                                                         <td>
                                                             {{w.no_of_coins}}
-                                                            
+
                                                         </td>
                                                         <td>{{w.created_at | date : 'd, MMM y h:m:s a'}}</td>
                                                         <td>
-                                                        <input type="number" class="form-control coinsInput" placeholder="Enter coins" style="width:150px;">
-                                                        <br>
-                                                        <button class="btn btn-primary" ng-click="withdrawCoins(w.user.code,$index)">Withdraw</button>
+                                                            <input type="number" class="form-control coinsInput" placeholder="Enter coins" style="width:150px;">
+                                                            <br>
+                                                            <button class="btn btn-primary" ng-click="withdrawCoins(w.user.code,$index)">Withdraw</button>
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex">
+                                                                <div class="mt-0 mt-sm-3 d-block">
+                                                                    <button class="btn btn-dark" ng-click="updateWithdrawStatus(w.id)">Delete</button>
+                                                                </div>
+                                                            </div>
                                                         </td>
                                                     </tr>
-                                                   
-                                                  
+
+
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div> 
+                        </div>
                         <!-- End Row -->
-                       
+
 
                     </div>
                     <!-- CONTAINER CLOSED -->

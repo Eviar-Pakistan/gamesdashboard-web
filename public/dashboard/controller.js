@@ -6,6 +6,7 @@ app.controller(
   function ($scope, $http, $cookies, $location) {
     // $scope.ui = "https://e4earning.com/admin/";
     $scope.ui = "http://16.171.47.82/dashboard/";
+    // $scope.ui = "http://localhost/public/dashboard/";
     $scope.loginUrl = "login.php";
     $scope.dashboardUrl = "index.php";
     $scope.dbURL =
@@ -13,6 +14,13 @@ app.controller(
 
     $scope.screenshotsURL =
       "http://16.171.47.82/uploads/deposit_screenshots/";
+
+
+    // $scope.dbURL =
+    //   "http://127.0.0.1:8000/api/";
+
+    // $scope.screenshotsURL =
+    //   "http://127.0.0.1:8000/uploads/deposit_screenshots/";
 
     $scope.username = "";
 
@@ -37,7 +45,7 @@ app.controller(
 
     $scope.login = function () {
       console.log("called")
-    
+
       $http({
         method: "POST",
         url: $scope.dbURL + "login",
@@ -222,17 +230,17 @@ app.controller(
     $scope.checkBalance = function () {
       $http({
         method: "GET",
-	      //url: $scope.dbURL + "check-user-balance?userId=" + $cookies.get("id"),
-	      url: $scope.dbURL + "check-user-balance?userId=1",
+        //url: $scope.dbURL + "check-user-balance?userId=" + $cookies.get("id"),
+        url: $scope.dbURL + "check-user-balance?userId=1",
         data: {},
         headers: {
           "Content-Type": "application/json",
         },
       })
         .then(function (response) {
-          console.log("coins: ",response.data);
+          console.log("coins: ", response.data);
           $scope.balance = response.data["coin_balance"];
-		
+
 
           //   else {
           //     console.log("invalid Password");
@@ -255,7 +263,7 @@ app.controller(
       })
         .then(function (response) {
           $scope.allUsers = response.data["users"];
-
+          console.log("All users", response.data)
           //   else {
           //     console.log("invalid Password");
           //   }
@@ -484,7 +492,7 @@ app.controller(
           },
         })
           .then(function (response) {
-            console.log(response.data);
+            console.log("Deposit data", response.data);
             $scope.deposits = response.data;
             // $scope.showResponse(1, response.data["message"]);
           })
@@ -678,6 +686,169 @@ app.controller(
         $scope.showError = true;
       }
     };
+
+    //Deactivate user
+    $scope.deactivateUser = function (userId) {
+      $http({
+        method: "POST",
+        url: $scope.dbURL + "deactivate-user", // this matches your Laravel route
+        data: {
+          id: userId
+        },
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(function (response) {
+        alert("User deactivated successfully!");
+        $scope.getAllUsers(); // Refresh the list
+      }).catch(function (error) {
+        console.error("Failed to deactivate user:", error);
+        alert("Failed to deactivate user.");
+      });
+    };
+
+
+    //Activate user
+    $scope.activateUser = function (userId) {
+
+      $http({
+        method: "POST",
+        url: $scope.dbURL + "activate-user", // this matches your Laravel route
+        data: {
+          id: userId
+        },
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(function (response) {
+        alert("User activated successfully!");
+        $scope.getAllUsers(); // Refresh the list
+      }).catch(function (error) {
+        console.error("Failed to deactivate user:", error);
+        alert("Failed to deactivate user.");
+      });
+    };
+
+
+    //Delete user
+
+    $scope.deleteUser = function (userId) {
+
+      $http({
+        method: "POST",
+        url: $scope.dbURL + "delete-user", // this matches your Laravel route
+        data: {
+          id: userId
+        },
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(function (response) {
+        alert("User deleted successfully!");
+        $scope.getAllUsers(); // Refresh the list
+      }).catch(function (error) {
+        console.error("Failed to deactivate user:", error);
+        alert("Failed to deactivate user.");
+      });
+    };
+
+
+    //Delete user Deposite
+    $scope.updateDepositStatus = function (depositId) {
+      $http({
+        method: "POST",
+        url: $scope.dbURL + "update-deposit-status", // Matches your Laravel route
+        data: {
+          id: depositId
+        },
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(function (response) {
+        if (response.data.status) {
+          alert("Deposit status updated successfully!");
+          $scope.fetchDeposits(); // Call your method to refresh the deposit list
+        } else {
+          alert("Failed to update deposit status: " + response.data.message);
+        }
+      }).catch(function (error) {
+        console.error("Error updating deposit status:", error);
+        alert("Something went wrong while updating deposit status.");
+      });
+    };
+
+    //Delete user Deposite
+    $scope.updateWithdrawStatus = function (withdrawId) {
+      $http({
+        method: "POST",
+        url: $scope.dbURL + "update-withdraw-status", // Matches your Laravel route
+        data: {
+          id: withdrawId
+        },
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(function (response) {
+        if (response.data.status) {
+          alert("withdraw status updated successfully!");
+          $scope.fetchWithdrawals(); // Call your method to refresh the deposit list
+        } else {
+          alert("Failed to update deposit status: " + response.data.message);
+        }
+      }).catch(function (error) {
+        console.error("Error updating withdraw status:", error);
+        alert("Something went wrong while updating withdraw status.");
+      });
+    };
+
+
+
+    //Deactivate user from all
+    // $scope.deactivateUserFromAll = function (userId) {
+    //   console.log("deactivate button called")
+    //   $http({
+    //       method: "POST",
+    //       url: $scope.dbURL + "deactivate-user", // this matches your Laravel route
+    //       data: {
+    //           id: userId
+    //       },
+    //       headers: {
+    //           "Content-Type": "application/json"
+    //       }
+    //   }).then(function (response) {
+    //       alert("User deactivated successfully!");
+    //       $scope.getAllUsers(); // Refresh the list
+    //   }).catch(function (error) {
+    //       console.error("Failed to deactivate user:", error);
+    //       alert("Failed to deactivate user.");
+    //   });
+    // };
+
+
+    //Activate user from all
+    // $scope.activateUserFromAll = function (userId) {
+    //   console.log("Activate button called")
+    //   $http({
+    //       method: "POST",
+    //       url: $scope.dbURL + "activate-user", // this matches your Laravel route
+    //       data: {
+    //           id: userId
+    //       },
+    //       headers: {
+    //           "Content-Type": "application/json"
+    //       }
+    //   }).then(function (response) {
+    //       alert("User activated successfully!");
+    //       $scope.getAllUsers(); // Refresh the list
+    //   }).catch(function (error) {
+    //       console.error("Failed to deactivate user:", error);
+    //       alert("Failed to deactivate user.");
+    //   });
+    // };
+
+
+
+
   }
 );
 

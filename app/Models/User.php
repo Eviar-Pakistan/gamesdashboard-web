@@ -25,6 +25,8 @@ class User extends Authenticatable
         'coin_balance',
         'type',
         'secret_pin',
+        'isActive',     
+        'isDeleted',    
     ];
 
     /**

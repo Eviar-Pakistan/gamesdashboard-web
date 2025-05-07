@@ -82,10 +82,10 @@ class userController extends Controller
             'code' => $user->code,
         ], 200);
     }
-public function addCoins(Request $request)
+    public function addCoins(Request $request)
     {
         $userId = $request->userId;
-    
+
         // Fetch the user from the database
         $user = User::whereId($userId)->first();
         if ($user == null) {
@@ -93,20 +93,20 @@ public function addCoins(Request $request)
                 'message' => "User not found",
             ]);
         }
-    
+
         // Validate the 'coins' parameter
         $request->validate([
             'coins' => 'required|numeric',
         ]);
-    
+
         // Calculate 95% of the coins to be added to the user's balance
         $coinsToAdd = ceil($request->coins * 0.95); // 95% to the user
         $coinsForAdmin = ceil($request->coins * 0.05); // 5% to admin (id = 3)
-    
+
         // Update the user's coin balance (95%)
         $user->coin_balance += $coinsToAdd;
         $user->save();
-    
+
         // Check if the user is not the admin (id = 3)
         if ($userId != 3) {
             // Add 5% to the admin's coin balance (id = 3)
@@ -116,16 +116,16 @@ public function addCoins(Request $request)
                 $admin->save();
             }
         }
-    
+
         return response()->json([
             'message' => "Successfully added coins",
             'coin_balance' => $user->coin_balance, // Return updated balance for the user
         ]);
     }
-      public function deductCoins(Request $request)
+    public function deductCoins(Request $request)
     {
         $userId = $request->userId;
-    
+
         // Fetch the user from the database
         $user = User::whereId($userId)->first();
         if ($user == null) {
@@ -133,22 +133,22 @@ public function addCoins(Request $request)
                 'message' => "User not found",
             ]);
         }
-    
+
         // Validate the 'coins' parameter
         $request->validate([
             'coins' => 'required|numeric',
         ]);
-    
+
         // // Calculate 95% of the coins to be added to the user's balance
         // $coinsToAdd = ceil($request->coins * 0.95); // 95% to the user
         // $coinsForAdmin = ceil($request->coins * 0.05); // 5% to admin (id = 3)
-    
+
         // Update the user's coin balance (95%)
         // $user->coin_balance += $coinsToAdd;
         $user->coin_balance -= $request->coins;
         $user->save();
-    
-    
+
+
         return response()->json([
             'message' => "Successfully added coins",
             'coin_balance' => $user->coin_balance, // Return updated balance for the user
@@ -298,5 +298,82 @@ public function addCoins(Request $request)
             'user' => $user,
             'status' => 1,
         ]);
+    }
+
+    public function deactivateUser(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:users,id',
+        ]);
+
+        $user = User::find($request->id);
+
+        if ($user) {
+            $user->isActive = false;
+            $user->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User deactivated successfully',
+                'user' => $user
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'User not found',
+        ], 404);
+    }
+
+
+    public function activateUser(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:users,id',
+        ]);
+
+        $user = User::find($request->id);
+
+        if ($user) {
+            $user->isActive = true;
+            $user->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User activated successfully',
+                'user' => $user
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'User not found',
+        ], 404);
+    }
+
+
+    public function deleteUser(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:users,id',
+        ]);
+
+        $user = User::find($request->id);
+
+        if ($user) {
+            $user->isDeleted = true;
+            $user->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User deleted successfully',
+                'user' => $user
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'User not found',
+        ], 404);
     }
 }

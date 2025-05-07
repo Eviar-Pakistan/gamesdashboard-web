@@ -60,7 +60,7 @@
             <!--/APP-SIDEBAR-->
 
             <!--app-content open-->
-            <div class="main-content app-content mt-0" >
+            <div class="main-content app-content mt-0">
                 <div class="side-app">
 
                     <!-- CONTAINER -->
@@ -93,41 +93,50 @@
                                             <table class="table table-bordered text-nowrap border-bottom" id="basic-datatable">
                                                 <thead>
                                                     <tr>
-                                                    <th class="wd-15p border-bottom-0">User ID</th>
+                                                        <th class="wd-15p border-bottom-0">User ID</th>
                                                         <th class="wd-15p border-bottom-0">Full name</th>
                                                         <th class="wd-15p border-bottom-0">Mobile number</th>
                                                         <th class="wd-20p border-bottom-0">Deposit Slip</th>
                                                         <th class="wd-15p border-bottom-0">Date</th>
                                                         <th class="wd-15p border-bottom-0">Action</th>
+                                                        <th class="wd-15p border-bottom-0">Delete</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr ng-repeat="d in deposits">
-                                                        <td>{{d.user_id}}</td>    
+                                                    <tr ng-repeat="d in deposits | filter:{deposit_status:'1'}">
+                                                        <td>{{d.user_id}}</td>
                                                         <td>{{d.user.name}}</td>
                                                         <td>{{d.user.mobile_no}}</td>
                                                         <td>
-                                                            <a href="{{screenshotsURL}}{{d.screenshot}}" target="_blank"><img src="{{screenshotsURL}}{{d.screenshot}}" alt="" style="height:100px; width:100px;">    </a>
-                                                            
+                                                            <a href="{{screenshotsURL}}{{d.screenshot}}" target="_blank"><img src="{{screenshotsURL}}{{d.screenshot}}" alt="" style="height:100px; width:100px;"> </a>
+
                                                         </td>
                                                         <td>{{d.created_at | date : 'd, MMM y h:m:s a'}}</td>
                                                         <td>
-                                                        <input type="number" class="form-control coinsInput" placeholder="Enter coins" >
-                                                        <br>
-                                                        <button class="btn btn-primary" ng-click="depositCoins('IWaA0s',$index)">Deposit</button>
+                                                            <input type="number" class="form-control coinsInput" placeholder="Enter coins">
+                                                            <br>
+                                                            <button class="btn btn-primary" ng-click="depositCoins('IWaA0s',$index)">Deposit</button>
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="d-flex">
+                                                                <div class="mt-0 mt-sm-3 d-block">
+                                                                    <button class="btn btn-dark" ng-click="updateDepositStatus(d.id)">Delete</button>
+                                                                </div>
+                                                            </div>
                                                         </td>
                                                     </tr>
-                                                   
-                                                  
+
+
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div> 
+                        </div>
                         <!-- End Row -->
-                       
+
 
                     </div>
                     <!-- CONTAINER CLOSED -->

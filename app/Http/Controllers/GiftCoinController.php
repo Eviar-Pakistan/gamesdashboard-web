@@ -61,13 +61,12 @@ class GiftCoinController extends Controller
                 return response()->json([
                     'message' => "Insufficient funds",
                 ]);
-                
             }
             $fromCoins = -$fromCoins;
             $toCoins = $toCoins;
         }
-        
-        if ($request->coin_type == 6 ) {
+
+        if ($request->coin_type == 6) {
             if ((int) $fromUser->coin_balance < (int) $request->coins) {
 
                 // return response()->json([
@@ -76,7 +75,6 @@ class GiftCoinController extends Controller
                 return response()->json([
                     'message' => "Insufficient funds",
                 ]);
-                
             }
             $fromCoins = -$fromCoins;
             $toCoins = $toCoins;
@@ -119,7 +117,7 @@ class GiftCoinController extends Controller
 
         return response()->json([
             'coinsData' => $giftCoin,
-            'status'=>"Transferred"
+            'status' => "Transferred"
         ]);
     }
 
@@ -150,123 +148,150 @@ class GiftCoinController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-    }
-    
-    
-    
+    public function destroy(string $id) {}
+
+
+
     public function returnGiftCoins(Request $request)
     {
-        
-        if($request->type=="purchased"){
-              $query = User::select(['id','name','mobile_no'])->whereNotIn('id', [8])->orderBy('id', 'ASC')->get();
-        // echo $query;
-        
-        $i=0;
-        $array = [];
-        
-        
-        foreach($query as $q){
-            $array[$i]=[
-                  'id' => $q->id,
-                  'name' => $q->name,
-                  'mobile' => $q->mobile_no,
-                  'coins' => GiftCoin::where('to_user_id', $q->id)
-                    ->where('coin_type', $request->coin_type)->sum('coins')
-                ];
-                $i++;
-        }
-        /*return response()->json([
-            'coins' => GiftCoin::where('to_user_id', $request->user_id)
-                ->where('coin_type', $request->coin_type)->sum('coins')
-        ]);*/
-        return response()->json(['PurchasedCoins' => $array]);
-        }
-        
-        if($request->type=="used"){
-              $query = User::select(['id','name','mobile_no'])->whereNotIn('id', [8])->orderBy('id', 'ASC')->get();
-        // echo $query;
-        
-        $i=0;
-        $array = [];
-        
-        
-        foreach($query as $q){
-            $array[$i]=[
-                  'id' => $q->id,
-                  'name' => $q->name,
-                  'mobile' => $q->mobile_no,
-                  'coins' => GiftCoin::where('from_user_id', $q->id)
-                    ->where('coin_type', $request->coin_type)->sum('coins')
-                ];
-                $i++;
-        }
-        /*return response()->json([
-            'coins' => GiftCoin::where('to_user_id', $request->user_id)
-                ->where('coin_type', $request->coin_type)->sum('coins')
-        ]);*/
-        return response()->json(['UsedCoins' => $array]);
-        }
-        
-        if($request->type=="won"){
-              $query = User::select(['id','name','mobile_no'])->whereNotIn('id', [8])->orderBy('id', 'ASC')->get();
-        // echo $query;
-        
-        $i=0;
-        $array = [];
-        
-        
-        foreach($query as $q){
-            $array[$i]=[
-                  'id' => $q->id,
-                  'name' => $q->name,
-                  'mobile' => $q->mobile_no,
-                  'coins' => GiftCoin::where('to_user_id', $q->id)
-                    ->where('coin_type', $request->coin_type)->sum('coins')
-                ];
-                $i++;
-        }
-        /*return response()->json([
-            'coins' => GiftCoin::where('to_user_id', $request->user_id)
-                ->where('coin_type', $request->coin_type)->sum('coins')
-        ]);*/
-        return response()->json(['WonCoins' => $array]);
-        }
-        
-      
-          if($request->type=="withdraw"){
-                  $query = User::select(['id','name','mobile_no'])->whereNotIn('id', [8])->orderBy('id', 'ASC')->get();
+
+        if ($request->type == "purchased") {
+            $query = User::select([
+                'id',
+                'name',
+                'mobile_no',
+                'isActive',
+                'isDeleted',
+            ])->whereNotIn('id', [8])->orderBy('id', 'ASC')->get();
             // echo $query;
-            
-            $i=0;
+
+            $i = 0;
             $array = [];
-            
-            
-            foreach($query as $q){
-                $array[$i]=[
-                      'id' => $q->id,
-                      'name' => $q->name,
-                      'mobile' => $q->mobile_no,
-                      'coins' => GiftCoin::where('to_user_id', $q->id)
+
+
+            foreach ($query as $q) {
+                $array[$i] = [
+                    'id' => $q->id,
+                    'name' => $q->name,
+                    'mobile' => $q->mobile_no,
+                    'isActive' => $q->isActive,
+                    'isDeleted' => $q->isDeleted,
+                    'coins' => GiftCoin::where('to_user_id', $q->id)
                         ->where('coin_type', $request->coin_type)->sum('coins')
-                    ];
-                    $i++;
+                ];
+                $i++;
+            }
+            /*return response()->json([
+            'coins' => GiftCoin::where('to_user_id', $request->user_id)
+                ->where('coin_type', $request->coin_type)->sum('coins')
+        ]);*/
+            return response()->json(['PurchasedCoins' => $array]);
+        }
+
+        if ($request->type == "used") {
+            $query = User::select([
+                'id',
+                'name',
+                'mobile_no',
+                'isActive',
+                'isDeleted',
+            ])->whereNotIn('id', [8])->orderBy('id', 'ASC')->get();
+            // echo $query;
+
+            $i = 0;
+            $array = [];
+
+
+            foreach ($query as $q) {
+                $array[$i] = [
+                    'id' => $q->id,
+                    'name' => $q->name,
+                    'mobile' => $q->mobile_no,
+                    'isActive' => $q->isActive,
+                    'isDeleted' => $q->isDeleted,
+                    'coins' => GiftCoin::where('from_user_id', $q->id)
+                        ->where('coin_type', $request->coin_type)->sum('coins')
+                ];
+                $i++;
+            }
+            /*return response()->json([
+            'coins' => GiftCoin::where('to_user_id', $request->user_id)
+                ->where('coin_type', $request->coin_type)->sum('coins')
+        ]);*/
+            return response()->json(['UsedCoins' => $array]);
+        }
+
+        if ($request->type == "won") {
+            $query = User::select([
+                'id',
+                'name',
+                'mobile_no',
+                'isActive',
+                'isDeleted',
+            ])->whereNotIn('id', [8])->orderBy('id', 'ASC')->get();
+            // echo $query;
+
+            $i = 0;
+            $array = [];
+
+
+            foreach ($query as $q) {
+                $array[$i] = [
+                    'id' => $q->id,
+                    'name' => $q->name,
+                    'mobile' => $q->mobile_no,
+                    'isActive' => $q->isActive,
+                    'isDeleted' => $q->isDeleted,
+                    'coins' => GiftCoin::where('to_user_id', $q->id)
+                        ->where('coin_type', $request->coin_type)->sum('coins')
+                ];
+                $i++;
+            }
+            /*return response()->json([
+            'coins' => GiftCoin::where('to_user_id', $request->user_id)
+                ->where('coin_type', $request->coin_type)->sum('coins')
+        ]);*/
+            return response()->json(['WonCoins' => $array]);
+        }
+
+
+        if ($request->type == "withdraw") {
+            $query = User::select([
+                'id',
+                'name',
+                'mobile_no',
+                'isActive',
+                'isDeleted',
+            ])->whereNotIn('id', [8])->orderBy('id', 'ASC')->get();
+            // echo $query;
+
+            $i = 0;
+            $array = [];
+
+
+            foreach ($query as $q) {
+                $array[$i] = [
+                    'id' => $q->id,
+                    'name' => $q->name,
+                    'mobile' => $q->mobile_no,
+                    'isActive' => $q->isActive,
+                    'isDeleted' => $q->isDeleted,
+                    'coins' => GiftCoin::where('to_user_id', $q->id)
+                        ->where('coin_type', $request->coin_type)->sum('coins')
+                ];
+                $i++;
             }
             /*return response()->json([
                 'coins' => GiftCoin::where('to_user_id', $request->user_id)
                     ->where('coin_type', $request->coin_type)->sum('coins')
             ]);*/
             return response()->json(['withdrawCoins' => $array]);
-            }
-        
-
+        }
     }
-    
-    public function checkUpdate(Request $request){
+
+    public function checkUpdate(Request $request)
+    {
         $results = DB::table('settings')->where('key_name', 'current_version')->first();
         return $results->key_value;
     }
-    
-    
 }

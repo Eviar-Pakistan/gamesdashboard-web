@@ -63,6 +63,7 @@ Route::post('/withdraws', [WithdrawController::class, 'store']);
 Route::get('/withdraws/{withdraw}', [WithdrawController::class, 'show']);
 Route::post('/withdraws/{withdraw}', [WithdrawController::class, 'update']);
 Route::post('/withdraws/{withdraw}', [WithdrawController::class, 'destroy']);
+Route::post('/update-withdraw-status', [WithdrawController::class, 'updateWithdrawStatus']);
 
 Route::get('/deposit-info', [DepositInfoController::class, 'index']);
 
@@ -71,7 +72,12 @@ Route::post('/deposits', [DepositController::class, 'store']);
 Route::get('/deposits/{deposit}', [DepositController::class, 'show']);
 Route::put('/deposits/{deposit}', [DepositController::class, 'update']);
 Route::delete('/deposits/{deposit}', [DepositController::class, 'destroy']);
+Route::post('/update-deposit-status', [DepositController::class, 'updateDepositStatus']);
+
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [userController::class, 'logout']);
 });
+Route::post('/deactivate-user', [UserController::class, 'deactivateUser']);
+Route::post('/activate-user', [UserController::class, 'activateUser']);
+Route::post('/delete-user', [UserController::class, 'deleteUser']);

@@ -114,10 +114,12 @@
                                                                         <thead class="border-top">
                                                                             <tr>
                                                                                 <th class="bg-transparent border-bottom-0" style="width: 5%;">Name</th>
-                                                                                <th class="bg-transparent border-bottom-0">
-                                                                                    Mobile</th>
-                                                                                <th class="bg-transparent border-bottom-0">
-                                                                                    Coins</th>
+                                                                                <th class="bg-transparent border-bottom-0">Mobile</th>
+                                                                                <th class="bg-transparent border-bottom-0">Coins</th>
+                                                                                <!-- <th class="bg-transparent">status</th>
+                                                                                <th class="bg-transparent">Delete</th> -->
+                                                                                <!-- <th class="bg-transparent border-bottom-0">
+                                                                                    Delete</th> -->
 
                                                                             </tr>
                                                                         </thead>
@@ -132,8 +134,7 @@
                                                                                 </td>
                                                                                 <td>
                                                                                     <div class="d-flex">
-
-                                                                                        <div class="ms-3 mt-0 mt-sm-2 d-block">
+                                                                                        <div class="mt-0 mt-sm-2 d-block">
                                                                                             <h6 class="mb-0 fs-14 fw-semibold">
                                                                                                 {{p.mobile}}
                                                                                             </h6>
@@ -142,13 +143,14 @@
                                                                                 </td>
                                                                                 <td>
                                                                                     <div class="d-flex">
-                                                                                        <div class="mt-0 mt-sm-3 d-block">
+                                                                                        <div class="mt-0 mt-sm-2 d-block">
                                                                                             <h6 class="mb-0 fs-14 fw-semibold">
                                                                                                 {{p.coins}}
                                                                                             </h6>
                                                                                         </div>
                                                                                     </div>
                                                                                 </td>
+                                                                               
 
                                                                             </tr>
 

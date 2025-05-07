@@ -57,4 +57,5 @@ $response = $kernel->handle(
 $kernel->terminate($request, $response);
 
 header("Location: http://16.171.47.82/dashboard");
+
 exit();

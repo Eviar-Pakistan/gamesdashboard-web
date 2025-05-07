@@ -15,15 +15,15 @@ class DepositController extends Controller
         } else {
             $deposits = Deposit::with('user')->get();
         }
-        
+
         return $deposits;
     }
-    
+
 
     public function store(Request $request)
     {
         $request->validate([
-            'screenshot' => 'required|image|mimes:jpeg,png,jpg,gif', 
+            'screenshot' => 'required|image|mimes:jpeg,png,jpg,gif',
             'user_id' => 'required|integer',
         ]);
 
@@ -50,7 +50,7 @@ class DepositController extends Controller
     public function update(Request $request, Deposit $deposit)
     {
         $request->validate([
-            'screenshot' => 'sometimes|image|mimes:jpeg,png,jpg,gif', 
+            'screenshot' => 'sometimes|image|mimes:jpeg,png,jpg,gif',
             'user_id' => 'sometimes|integer',
             'status' => 'sometimes|integer',
         ]);
@@ -78,7 +78,7 @@ class DepositController extends Controller
         $deposit->save();
 
         $deposit->load('user');
-        
+
         return $deposit;
     }
 
@@ -86,5 +86,30 @@ class DepositController extends Controller
     {
         $deposit->delete();
         return response()->json(null, 204);
+    }
+
+    public function updateDepositStatus(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:deposits,id',
+        ]);
+
+        $deposit = Deposit::find($request->id);
+
+        if ($deposit) {
+            $deposit->deposit_status = 0;
+            $deposit->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Deposit status updated successfully',
+                'deposit' => $deposit
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Deposit not found',
+        ], 404);
     }
 }
