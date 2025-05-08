@@ -62,7 +62,7 @@
                     <div class="wrap-login100 p-6">
                         <form class="login100-form validate-form">
                             <span class="login100-form-title pb-5">
-                                Login g
+                                Login
                             </span>
                             <div class="panel panel-primary">
                                 <div class="tab-menu-heading">

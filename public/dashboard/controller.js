@@ -5,15 +5,15 @@ app.controller(
   "adminController",
   function ($scope, $http, $cookies, $location) {
     // $scope.ui = "https://e4earning.com/admin/";
-    $scope.ui = "http://16.171.47.82/dashboard/";
+    $scope.ui = "http://16.16.201.223/dashboard/";
     // $scope.ui = "http://localhost/public/dashboard/";
     $scope.loginUrl = "login.php";
     $scope.dashboardUrl = "index.php";
     $scope.dbURL =
-      "http://16.171.47.82/api/";
+      "http://16.16.201.223/api/";
 
     $scope.screenshotsURL =
-      "http://16.171.47.82/uploads/deposit_screenshots/";
+      "http://16.16.201.223/uploads/deposit_screenshots/";
 
 
     // $scope.dbURL =
